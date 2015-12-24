@@ -1,0 +1,132 @@
+<div class="page-header page-header-top clearfix">
+
+	<form action="/user/search/" method="post">
+		<div class="pull-right">
+			<label>
+				<div class="input-prepend">
+					<span class="add-on"><i class="icon-search"></i></span>
+					<input type="text" name="name" placeholder="Search by name"
+						   class="remove-box-shadow remove-transition remove-radius">
+					<input type="hidden" name="viewer" value="<?php echo $this->username; ?>" >
+				</div>
+			</label>
+		</div>
+	</form>
+	<h4 class="pull-left"><i class="icon-user"></i> Welcome <?php echo $this->username; ?></h4>
+	<br>
+	<form action="/user/getpost/" method="post">
+		<div class="pull-right" style="margin-left: 500px;">
+			<label>
+				<div class="input-prepend">
+					<span class="add-on"><i class="icon-search"></i></span>
+					<input type="text" name="word" placeholder="hash tag search"
+						   class="remove-box-shadow remove-transition remove-radius">
+					<input type="hidden" name="viewer" value="<?php echo $this->username; ?>" >
+				</div>
+			</label>
+		</div>
+	</form>
+</div>
+<div class="dash-tiles row-fluid">
+	<div class="span1"></div>
+	<div class="span3">
+		<div class="dash-tile dash-tile-ocean clearfix">
+			<div class="dash-tile-header">
+				<div class="dash-tile-options">
+					<div class="btn-group">
+						<a href="<?php echo $this->url(array('action' => 'followers', 'username' => $this->username)); ?>" class="btn"><i class="icon-share"></i></a>
+					</div>
+				</div>
+				Followers
+			</div>
+			<div class="dash-tile-icon"><i class="icon-group"></i></div>
+			<div class="dash-tile-text"><?php echo count($this->user['followers']); ?></div>
+		</div>
+	</div>
+	<div class="span3">
+		<div class="dash-tile dash-tile-flower clearfix">
+			<div class="dash-tile-header">
+				Following
+			</div>
+			<div class="dash-tile-icon"><i class="icon-tags"></i></div>
+			<div class="dash-tile-text"><?php echo count($this->user['followed']); ?></div>
+		</div>
+
+	</div>
+
+	<div class="span3">
+		<div class="dash-tile dash-tile-oil clearfix">
+			<div class="dash-tile-header">
+				Favorites
+			</div>
+			<div class="dash-tile-icon"><i class="icon-globe"></i></div>
+			<div class="dash-tile-text"><?php echo ($this->user['favorites']); ?></div>
+		</div>
+	</div>
+</div>
+
+<form class="form-horizontal form-box" action="/user/post/username/<?php echo $this->username?>">
+	<h4 class="form-box-header">New Post</h4>
+	<div class="form-box-content">
+
+		<div class="control-group">
+			<label class="control-label" for="example-textarea-large">What's on your mind?</label>
+			<div class="controls">
+				<textarea name="text" class="textarea-large" rows="10" cols="80"></textarea>
+			</div>
+		</div>
+
+		<div class="form-actions">
+			<button class="btn btn-success"><i class="icon-save"></i> Tweet! </button>
+		</div>
+	</div>
+</form>
+
+<?php foreach($this->posts as $post): ?>
+<div class="row-fluid">
+	<div class="inbox-messages-container">
+
+		<div class="inbox-messages-content-header" style="width: 1000px">
+			<div class="row-fluid">
+				<div class="span12">
+					<a href="javascript:void(0)"><strong>You said:</strong></a>
+				</div>
+			</div>
+		</div>
+		<!-- END Message Header -->
+		<div class="inbox-messages-content-body">
+			<?php echo $post['text']; ?>
+			<br><br>
+
+			<b> <?php echo count($post['favorites']); ?> likes</b>
+
+			<a href="<?php echo $this->url(array('action' => 'like', 'username'=> $this->username, 'post_id'=> $post['_id'], 'type'=>1)); ?>
+					" class="btn btn-primary btn-mini"><i class="halflingicon-link"></i> Like</a>
+		</div>
+		<div class="inbox-messages-content-reply">
+			<?php foreach($post['comments'] as $comment): ?>
+				<b><?php echo $comment['username'];?></b> : <?php echo $comment['comment_text'];?>
+				<hr>
+			<?php endforeach; ?>
+		</div>
+		<div class="inbox-messages-content-reply">
+			<form class="form-horizontal form-box" action="/user/comment/username/<?php echo $this->username; ?>" method="post">
+				<div class="form-box-content">
+					<div class="control-group">
+						<label class="control-label" for="example-textarea-large">Add comment</label>
+						<div class="controls">
+							<input name="post_id" value="<?php echo $post['_id'];?>" type="hidden" />
+							<textarea class="textarea-large" rows="1" cols="90" name="comment"></textarea>
+						</div>
+					</div>
+					<div class="form-actions">
+						<button class="btn btn-success"><i class="icon-save"></i> Comment</button>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+
+</div>
+<br>
+<?php endforeach; ?>

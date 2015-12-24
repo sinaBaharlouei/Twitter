@@ -1,0 +1,92 @@
+<div class="page-header page-header-top clearfix">
+	<h4 class="pull-left"><i class="icon-user"></i>
+		<span style="margin-left: 4px"><?php echo $this->username . " page"; ?> </span>
+	</h4>
+	<a class="btn btn-info pull-right" href="<?php echo $this->url( array('action'=> 'follow', 'follower_user'=> $this->viewer, 'followed_user'=> $this->username) ); ?>" > Follow <?php echo $this->username; ?></a>
+</div>
+
+<div class="dash-tiles row-fluid">
+	<div class="span1"></div>
+	<div class="span3">
+		<div class="dash-tile dash-tile-ocean clearfix">
+			<div class="dash-tile-header">
+				<div class="dash-tile-options">
+					<div class="btn-group">
+						<a href="<?php echo $this->url(array('action' => 'followers', 'username' => $this->username)); ?>" class="btn" data-toggle="tooltip" title=""><i class="icon-share"></i></a>
+					</div>
+				</div>
+				Followers
+			</div>
+			<div class="dash-tile-icon"><i class="icon-group"></i></div>
+			<div class="dash-tile-text"><?php echo count($this->user['followers']); ?></div>
+		</div>
+	</div>
+	<div class="span3">
+		<div class="dash-tile dash-tile-flower clearfix">
+			<div class="dash-tile-header">
+				Following
+			</div>
+			<div class="dash-tile-icon"><i class="icon-tags"></i></div>
+			<div class="dash-tile-text"><?php echo count($this->user['followed']); ?></div>
+		</div>
+
+	</div>
+
+	<div class="span3">
+		<div class="dash-tile dash-tile-oil clearfix">
+			<div class="dash-tile-header">
+				Favorites
+			</div>
+			<div class="dash-tile-icon"><i class="icon-globe"></i></div>
+			<div class="dash-tile-text"><?php echo ($this->user['favorites']); ?></div>
+		</div>
+	</div>
+</div>
+
+<?php foreach($this->posts as $post): ?>
+	<div class="row-fluid">
+		<div class="inbox-messages-container">
+
+			<div class="inbox-messages-content-header" style="width: 1000px">
+				<div class="row-fluid">
+					<div class="span12">
+						<a href="javascript:void(0)"><strong><?php echo $this->username; ?> said:</strong></a>
+					</div>
+				</div>
+			</div>
+			<div class="inbox-messages-content-body">
+				<?php echo $post['text']; ?>
+				<br><br>
+
+				<b> <?php echo count($post['favorites']); ?> likes</b>
+
+				<a href="<?php echo $this->url(array('action' => 'like', 'username'=> $this->viewer, 'post_id'=> $post['_id'], 'type'=>2)); ?>
+					" class="btn btn-primary btn-mini"><i class="icon-thumbs-up"></i> Like</a>
+			</div>
+			<div class="inbox-messages-content-reply">
+				<?php foreach($post['comments'] as $comment): ?>
+					<b><?php echo $comment['username'];?></b> : <?php echo $comment['comment_text'];?>
+					<hr>
+				<?php endforeach; ?>
+			</div>
+			<div class="inbox-messages-content-reply">
+				<form class="form-horizontal form-box" action="/user/comment/username/<?php echo $this->viewer; ?>" method="post">
+					<div class="form-box-content">
+						<div class="control-group">
+							<label class="control-label" for="example-textarea-large">Add comment</label>
+							<div class="controls">
+								<input name="post_id" value="<?php echo $post['_id'];?>" type="hidden" />
+								<textarea class="textarea-large" rows="1" cols="90" name="comment"></textarea>
+							</div>
+						</div>
+						<div class="form-actions">
+							<button class="btn btn-success"><i class="icon-save"></i> Comment</button>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+
+	</div>
+	<br>
+<?php endforeach; ?>

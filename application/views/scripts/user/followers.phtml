@@ -1,0 +1,10 @@
+<div class="page-header page-header-top clearfix">
+	<h4 class="pull-left"><i class="icon-user"></i> Followers of  <?php echo $this->username; ?></h4>
+</div>
+<ul>
+	<?php foreach($this->followers as $follower): ?>
+
+		<li><a href="<?php echo $this->url(array('action' => 'friend', 'username' => $follower['username'], 'viewer' => $this->username)); ?>">
+				<?php echo $follower['username']; ?></a></li>
+	<?php endforeach; ?>
+</ul>

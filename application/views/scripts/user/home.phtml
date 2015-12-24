@@ -1,0 +1,54 @@
+<div class="page-header page-header-top clearfix">
+	<h4 class="pull-left"><i class="icon-user"></i>
+		<span style="margin-left: 4px"><?php echo "Welcome " . $this->username ?> </span>
+	</h4>
+	<a class="btn btn-inverse pull-right" href="<?php echo $this->url( array('action'=> 'profile', 'username'=> $this->username) ); ?>" > Your profile </a>
+</div>
+
+<?php foreach($this->posts as $post): ?>
+	<div class="row-fluid">
+		<div class="inbox-messages-container">
+
+			<div class="inbox-messages-content-header" style="width: 1000px">
+				<div class="row-fluid">
+					<div class="span12">
+						<a href="javascript:void(0)"><strong><?php echo $post['owner_username']; ?> said:</strong></a>
+					</div>
+				</div>
+			</div>
+			<div class="inbox-messages-content-body">
+				<?php echo $post['text']; ?>
+				<br><br>
+
+				<b> <?php echo count($post['favorites']); ?> likes</b>
+
+				<a href="<?php echo $this->url(array('action' => 'like', 'username'=> $this->username, 'post_id'=> $post['_id'], 'type'=>3)); ?>
+					" class="btn btn-primary btn-mini"><i class="icon-thumbs-up"></i> Like</a>
+			</div>
+			<div class="inbox-messages-content-reply">
+				<?php foreach($post['comments'] as $comment): ?>
+					<b><?php echo $comment['username'];?></b> : <?php echo $comment['comment_text'];?>
+					<hr>
+				<?php endforeach; ?>
+			</div>
+			<div class="inbox-messages-content-reply">
+				<form class="form-horizontal form-box" action="/user/comment/username/<?php echo $this->username; ?>" method="post">
+					<div class="form-box-content">
+						<div class="control-group">
+							<label class="control-label" for="example-textarea-large">Add comment</label>
+							<div class="controls">
+								<input name="post_id" value="<?php echo $post['_id'];?>" type="hidden" />
+								<textarea class="textarea-large" rows="1" cols="90" name="comment"></textarea>
+							</div>
+						</div>
+						<div class="form-actions">
+							<button class="btn btn-success"><i class="icon-save"></i> Comment</button>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+
+	</div>
+	<br>
+<?php endforeach; ?>

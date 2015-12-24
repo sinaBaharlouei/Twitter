@@ -1,0 +1,29 @@
+<?php foreach($this->posts as $post): ?>
+	<div class="row-fluid">
+		<div class="inbox-messages-container">
+
+			<div class="inbox-messages-content-header" style="width: 1000px">
+				<div class="row-fluid">
+					<div class="span12">
+						<a href="javascript:void(0)"><strong><?php echo $post['owner_username']; ?> said:</strong></a>
+					</div>
+				</div>
+			</div>
+			<div class="inbox-messages-content-body">
+				<?php echo $post['text']; ?>
+				<br><br>
+
+				<b> <?php echo count($post['favorites']); ?> likes</b>
+			</div>
+			<div class="inbox-messages-content-reply">
+				<?php foreach($post['comments'] as $comment): ?>
+					<b><?php echo $comment['username'];?></b> : <?php echo $comment['comment_text'];?>
+					<hr>
+				<?php endforeach; ?>
+			</div>
+
+		</div>
+
+	</div>
+	<br>
+<?php endforeach; ?>
